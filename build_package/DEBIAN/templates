@@ -1,0 +1,4 @@
+Template: netmon-ai/apikey
+Type: string
+Description: Enter your GROQ API Key:
+ Please paste your Groq Cloud API Key here. This is required for the AI intelligence features to function.

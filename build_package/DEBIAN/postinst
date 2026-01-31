@@ -1,0 +1,29 @@
+#!/bin/bash
+# Load Debconf library
+. /usr/share/debconf/confmodule
+
+# 1. Get the API Key from the user's answer
+db_get netmon-ai/apikey
+USER_API_KEY="$RET"
+
+# 2. Create the config directory securely
+mkdir -p /etc/netmon-ai
+
+# 3. Write the .env file
+echo "GROQ_API_KEY=$USER_API_KEY" > /etc/netmon-ai/.env
+
+# 4. Lock it down (only root can read it)
+chmod 600 /etc/netmon-ai/.env
+
+# 5. Install Python Dependencies
+echo "Installing dependencies..."
+pip3 install rich groq python-dotenv nltk psutil
+
+# 6. Download NLTK data
+python3 -m nltk.downloader wordnet
+
+# 7. Make the command executable
+chmod +x /usr/bin/netmon-ai
+
+# Clean exit
+exit 0

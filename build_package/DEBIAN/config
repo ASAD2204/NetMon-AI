@@ -1,0 +1,4 @@
+#!/bin/bash
+. /usr/share/debconf/confmodule
+db_input high netmon-ai/apikey || true
+db_go

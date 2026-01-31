@@ -1,0 +1,7 @@
+#!/bin/bash
+# Wrapper script to launch NetMon-AI
+# 1. Add our installation directory to the Python path so imports work
+export PYTHONPATH=$PYTHONPATH:/usr/share/netmon-ai
+
+# 2. Run the main python shell script, passing any arguments ($@) along
+python3 /usr/share/netmon-ai/shell.py "$@"

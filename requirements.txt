@@ -1,0 +1,15 @@
+# NetMon-AI Requirements
+# Core system monitoring
+psutil>=5.9.0
+# Groq API
+groq>=0.4.0
+# Data handling
+pandas>=2.0.0
+numpy>=1.24.0
+# Date/time handling
+python-dateutil>=2.8.0
+# Configuration
+python-dotenv>=1.0.0
+
+# Windows-specific: Tab-completion support
+pyreadline3>=3.4.1; sys_platform == "win32"
