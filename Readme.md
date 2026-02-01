@@ -200,7 +200,8 @@ python src/shell.py
 netmon-ai
 ```
 
-### Example Queries
+### Example AI Queries
+
 ```bash
 ask "show me the ram usage"
 ask "show me the cpu, ram and disk usage"
@@ -208,7 +209,61 @@ ask "open dashboard"
 ask "kill process python"
 ask "list files in /var/log"
 ask "go to /tmp and list files"
+ask "why is cpu usage high?"
+ask "show me the top 5 memory consuming processes"
 ```
+
+---
+
+## 📋 Complete Commands Reference
+
+### Native Commands (Type directly in shell)
+
+| Command | Syntax | Effect | Risk Level |
+|---------|--------|--------|-----------|
+| **monitor** | `monitor` | Opens live TUI dashboard with CPU/MEM/DISK metrics (2Hz refresh) | 🟢 GREEN |
+| **pslist** | `pslist [filter]` | Lists all running processes with PID, CPU%, Memory%, Status | 🟢 GREEN |
+| **pskill** | `pskill <pid>` | Terminates a process by PID (requires confirmation) | 🔴 RED |
+| **connections** | `connections` | Shows all active network connections (IP, Port, Status) | 🟢 GREEN |
+| **register** | `register <file_path>` | Registers a file for Integrity Monitoring (FIM) | 🟡 YELLOW |
+| **audit** | `audit` | Checks all registered files for tampering (SHA-256 hash verification) | 🟢 GREEN |
+| **analyze** | `analyze <log_file>` | Uses AI to analyze log files for errors/warnings | 🟢 GREEN |
+| **service** | `service <name> <action>` | Start/stop/restart system services (e.g., `service nginx start`) | 🔴 RED |
+| **network** | `network [scan\|ping\|info]` | Network diagnostics (port scan, ping, connection info) | 🟡 YELLOW |
+| **user** | `user <action> [username]` | Add/remove/list users (e.g., `user add john`) | 🔴 RED |
+| **run-script** | `run-script <playbook.json>` | Execute JSON automation playbook | 🔴 RED |
+| **help** | `help [command]` | Shows available commands or detailed help for specific command | 🟢 GREEN |
+| **clear** | `clear` | Clears screen | 🟢 GREEN |
+| **exit** | `exit` | Closes NetMon-AI shell | 🟢 GREEN |
+
+### AI Commands (Natural Language via `ask`)
+
+| Query Type | Examples | Effect | Risk Level |
+|-----------|----------|--------|-----------|
+| **Monitoring** | `ask "show me the ram usage"`, `ask "cpu usage?"` | Returns single metric in compact format | 🟢 GREEN |
+| **Dashboard** | `ask "open dashboard"`, `ask "show me the dashboard"` | Opens full live TUI with all metrics | 🟢 GREEN |
+| **Process Management** | `ask "kill idle python"`, `ask "terminate chrome"` | Kills specified process (requires confirmation) | 🔴 RED |
+| **File Operations** | `ask "list files in /tmp"`, `ask "go to /var/log"` | Lists files in specified directory | 🟡 YELLOW |
+| **Network Analysis** | `ask "scan ports on google.com"`, `ask "ping 8.8.8.8"` | Network diagnostics | 🟡 YELLOW |
+| **System Analysis** | `ask "why is the system slow?"`, `ask "analyze my logs"` | AI-powered system analysis | 🟢 GREEN |
+| **General Q&A** | `ask "what processes are running?"`, `ask "show connections"` | Natural language system queries | 🟢 GREEN |
+
+### Risk Levels Explained
+
+🟢 **GREEN (Read-Only)** - Auto-executed, no confirmation needed
+- Safe for automated tasks
+- No system state changes
+
+🟡 **YELLOW (Non-Destructive)** - May require confirmation
+- System modifications that can be reversed
+- Configuration changes
+
+🔴 **RED (Critical/Destructive)** - Requires explicit human approval
+- Process termination
+- User management
+- File deletion
+- System configuration changes
+- **Security Gate activated**: `⚠️ SECURITY ALERT: RED RISK ACTION DETECTED`
 
 ---
 
