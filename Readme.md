@@ -123,20 +123,35 @@ sudo apt-get install -f
 
    **Option A1: Virtual Environment (Recommended):**
    ```bash
+   # Create virtual environment
    python3 -m venv /opt/netmon-ai-venv
+   
+   # Activate it
    source /opt/netmon-ai-venv/bin/activate
-   pip install -r /usr/share/netmon-ai/requirements.txt
+   
+   # Clone repo to access requirements.txt (or copy it manually)
+   git clone https://github.com/YOUR_USERNAME/NetMon-AI.git
+   cd NetMon-AI
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   
+   # Download NLTK data
    python3 -m nltk.downloader wordnet
+   
+   # Test the installation
+   ask "show me the ram usage"
+   ```
+   
+   **To run NetMon-AI in future sessions:**
+   ```bash
+   source /opt/netmon-ai-venv/bin/activate
    netmon-ai
    ```
 
-   **Option A2: System-Wide:**
-   ```bash
-   sudo apt-get install python3-pip python3-rich python3-psutil
-   sudo pip3 install groq python-dotenv nltk psutil
-   python3 -m nltk.downloader wordnet
-   netmon-ai
-   ```
+   **Option A2: System-Wide (Not Recommended on Modern Ubuntu):**
+   
+   Modern Ubuntu/Debian systems restrict `sudo pip3 install` to prevent breaking system Python. Use **Option A1 (Virtual Environment)** instead for better compatibility.
 
 ### Option B: Development Setup (Windows / Linux)
 
@@ -343,6 +358,60 @@ RED (Critical/Destructive)  🛑 Security Gate
    - Development: Plain `.env` (debug only, excluded from git)
    - Production: Base64-encoded storage at `/etc/netmon-ai/.env.b64`
    - Permissions: `600` (readable only by owner)
+
+---
+
+## ⚙️ Configuration & Setup
+
+### Getting Your Groq API Key
+
+1. Visit [Groq Console](https://console.groq.com/keys)
+2. Sign up for a free account (if needed)
+3. Generate a new API key
+4. Copy the key (starts with `gsk_`)
+
+### Setting Up API Key After Installation
+
+**For Linux Debian Package Installation:**
+```bash
+# Encode your API key in base64
+echo -n "gsk_your_actual_key_here" | base64 | sudo tee /etc/netmon-ai/.env.b64
+
+# Set correct permissions
+sudo chmod 600 /etc/netmon-ai/.env.b64
+
+# Verify it's set
+cat /etc/netmon-ai/.env.b64
+```
+
+**For Development (Local Testing):**
+```bash
+# Create .env file in project root
+echo "GROQ_API_KEY=gsk_your_actual_key_here" > .env
+
+# Enable local .env loading
+# Edit src/ai/groq_client.py and change line 6:
+# LOAD_ENV = False  →  LOAD_ENV = True
+
+# Then test
+python src/shell.py
+```
+
+### Verifying Installation
+
+Test that everything works:
+```bash
+# Activate venv if using one
+source /opt/netmon-ai-venv/bin/activate
+
+# Test a simple query
+ask "show me the ram usage"
+
+# Or test the full dashboard
+ask "open dashboard"
+```
+
+If you see system metrics, your installation is successful! ✅
 
 ---
 
