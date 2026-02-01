@@ -79,7 +79,7 @@ Unlike traditional CLI tools, NetMon-AI features a **Human-in-the-Loop (HITL) Se
 
 1. **Clone the Repository:**
 ```bash
-git clone https://github.com/YOUR_USERNAME/NetMon-AI.git
+git clone https://github.com/ASAD2204/NetMon-AI.git
 cd NetMon-AI
 
 ```
@@ -105,7 +105,7 @@ When releases are published to GitHub:
 ```bash
 # Download from GitHub Releases page
 cd /tmp
-wget https://github.com/YOUR_USERNAME/NetMon-AI/releases/download/v1.0.0/netmon-ai_1.0.0_all.deb
+wget https://github.com/ASAD2204/NetMon-AI/releases/download/v1.0.0/netmon-ai_1.0.0_all.deb
 
 # Install
 sudo dpkg -i netmon-ai_1.0.0_all.deb
@@ -130,7 +130,7 @@ sudo apt-get install -f
    source /opt/netmon-ai-venv/bin/activate
    
    # Clone repo to access requirements.txt (or copy it manually)
-   git clone https://github.com/YOUR_USERNAME/NetMon-AI.git
+   git clone https://github.com/ASAD2204/NetMon-AI.git
    cd NetMon-AI
    
    # Install dependencies
@@ -157,7 +157,7 @@ sudo apt-get install -f
 
 1. **Clone Repository:**
 ```bash
-git clone https://github.com/YOUR_USERNAME/NetMon-AI.git
+git clone https://github.com/ASAD2204/NetMon-AI.git
 cd NetMon-AI
 
 ```
