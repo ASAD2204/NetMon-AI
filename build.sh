@@ -68,23 +68,37 @@ cat > $BUILD_DIR/DEBIAN/postinst <<EOF
 #!/bin/bash
 . /usr/share/debconf/confmodule
 
-# Get API Key
+# Get API Key from debconf
 db_get netmon-ai/apikey
 USER_API_KEY="\$RET"
 
-# Create secure config
+# Create secure config directory and store base64-encoded API key
 mkdir -p /etc/$PKG_NAME
-echo "GROQ_API_KEY=\$USER_API_KEY" > /etc/$PKG_NAME/.env
-chmod 600 /etc/$PKG_NAME/.env
+echo -n "\$USER_API_KEY" | base64 > /etc/$PKG_NAME/.env.b64
+chmod 600 /etc/$PKG_NAME/.env.b64
 
-# Install Dependencies
-echo "Installing Python libraries..."
-pip3 install rich groq python-dotenv nltk psutil --break-system-packages
+echo "=========================================="
+echo "NetMon-AI Configuration Complete"
+echo "=========================================="
+echo ""
+echo "IMPORTANT: Install Python dependencies before running:"
+echo ""
+echo "  Option 1 (Recommended - Virtual Environment):"
+echo "    python3 -m venv /opt/netmon-ai-venv"
+echo "    source /opt/netmon-ai-venv/bin/activate"
+echo "    pip install -r /usr/share/$PKG_NAME/requirements.txt"
+echo "    python3 -m nltk.downloader wordnet"
+echo ""
+echo "  Option 2 (System-wide):"
+echo "    sudo apt-get install python3-pip python3-rich python3-psutil"
+echo "    sudo pip3 install groq python-dotenv nltk"
+echo "    python3 -m nltk.downloader wordnet"
+echo ""
+echo "API Key stored securely at: /etc/$PKG_NAME/.env.b64"
+echo "Run 'netmon-ai' to start the shell."
+echo "=========================================="
 
-# Setup NLTK
-python3 -m nltk.downloader wordnet
-
-# Permissions
+# Set permissions on wrapper
 chmod +x /usr/bin/$PKG_NAME
 
 exit 0

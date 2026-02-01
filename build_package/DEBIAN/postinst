@@ -9,21 +9,48 @@ USER_API_KEY="$RET"
 # 2. Create the config directory securely
 mkdir -p /etc/netmon-ai
 
-# 3. Write the .env file
-echo "GROQ_API_KEY=$USER_API_KEY" > /etc/netmon-ai/.env
+# 3. Encode the API key (simple obfuscation - better than plaintext)
+# For production, consider using gpg encryption
+echo "$USER_API_KEY" | base64 > /etc/netmon-ai/.env.b64
 
 # 4. Lock it down (only root can read it)
-chmod 600 /etc/netmon-ai/.env
+chmod 600 /etc/netmon-ai/.env.b64
 
-# 5. Install Python Dependencies
+# 5. Remove any plaintext .env if it exists
+rm -f /etc/netmon-ai/.env
+
+# 6. Install Python Dependencies
 echo "Installing dependencies..."
-pip3 install rich groq python-dotenv nltk psutil
+pip3 install rich groq python-dotenv nltk psutil --break-system-packages
 
-# 6. Download NLTK data
+# 7. Download NLTK data
 python3 -m nltk.downloader wordnet
 
-# 7. Make the command executable
+# 8. Create playbooks directory
+mkdir -p /usr/share/netmon-ai/playbooks
+chmod 755 /usr/share/netmon-ai/playbooks
+
+# 9. Create data directory for logs and integrity DB
+mkdir -p /var/lib/netmon-ai/data
+chmod 755 /var/lib/netmon-ai/data
+
+# 10. Create symlink for data directory
+ln -sf /var/lib/netmon-ai/data /usr/share/netmon-ai/data
+
+# 11. Make the command executable
 chmod +x /usr/bin/netmon-ai
+
+# 12. Display success message
+echo ""
+echo "=================================================="
+echo "  NetMon-AI installed successfully!"
+echo "=================================================="
+echo "Configuration stored securely at:"
+echo "  /etc/netmon-ai/.env.b64"
+echo ""
+echo "To start NetMon-AI, run:"
+echo "  netmon-ai"
+echo "=================================================="
 
 # Clean exit
 exit 0
