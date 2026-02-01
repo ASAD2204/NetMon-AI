@@ -75,15 +75,47 @@ Unlike traditional CLI tools, NetMon-AI features a **Human-in-the-Loop (HITL) Se
 
 ### Option A: Linux Debian Package (Recommended)
 
-1. **Download & Install:**
+#### Method 1: Build the Package Yourself
+
+1. **Clone the Repository:**
 ```bash
-# Download from releases or build locally
-sudo dpkg -i netmon-ai_1.0.0_all.deb
-sudo apt-get install -f  # Fix missing dependencies
+git clone https://github.com/YOUR_USERNAME/NetMon-AI.git
+cd NetMon-AI
 
 ```
 
-2. **API Key Configuration:**
+2. **Build the Debian Package:**
+```bash
+chmod +x build.sh
+./build.sh
+
+```
+This creates `netmon-ai_1.0.0_all.deb` in your current directory.
+
+3. **Install the Package:**
+```bash
+sudo dpkg -i netmon-ai_1.0.0_all.deb
+sudo apt-get install -f  # Fix any missing dependencies
+
+```
+
+#### Method 2: Download Pre-Built Package (When Available)
+
+When releases are published to GitHub:
+```bash
+# Download from GitHub Releases page
+cd /tmp
+wget https://github.com/YOUR_USERNAME/NetMon-AI/releases/download/v1.0.0/netmon-ai_1.0.0_all.deb
+
+# Install
+sudo dpkg -i netmon-ai_1.0.0_all.deb
+sudo apt-get install -f
+
+```
+
+---
+
+**API Key Configuration:**
    - You'll be prompted during installation to enter your Groq API Key via `debconf`
    - Key is stored securely: `/etc/netmon-ai/.env.b64` (base64-encoded, permissions: 600)
 
