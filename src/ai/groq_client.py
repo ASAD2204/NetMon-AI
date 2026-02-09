@@ -23,7 +23,7 @@ class GroqAIClient:
         # Fall back to plaintext .env files (development)
         # NOTE: automatic .env loading is disabled by default before pushing code.
         # To enable locally for testing, set LOAD_ENV = True or uncomment the block below.
-        LOAD_ENV = False
+        LOAD_ENV = True
 
         if not api_key and LOAD_ENV:
             # Search for .env in current dir and parent directories up to repo root
