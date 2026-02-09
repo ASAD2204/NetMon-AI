@@ -2,13 +2,13 @@
 
 # --- CONFIGURATION ---
 PKG_NAME="netmon-ai"
-VERSION="1.0.0"
+VERSION="1.1.0"
 ARCH="all"
 BUILD_DIR="build_package"
 DEB_NAME="${PKG_NAME}_${VERSION}_${ARCH}.deb"
 
 echo "=========================================="
-echo "   NetMon-AI: Auto-Builder & Installer    "
+echo "   NetMon-AI v1.1.0: Auto-Builder         "
 echo "=========================================="
 
 # 1. CLEANUP (Remove old builds)

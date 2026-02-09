@@ -2,18 +2,37 @@
 
 <div align="center">
 
+[![Version](https://img.shields.io/badge/Version-1.1.0-blue.svg)](https://github.com/ASAD2204/NetMon-AI/releases)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Groq Cloud](https://img.shields.io/badge/Powered%20by-Groq%20Cloud-brightgreen.svg)](https://groq.com)
 [![Llama 3.3](https://img.shields.io/badge/LLM-Llama%203.3-orange.svg)](https://www.meta.com/research/llama)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-success.svg)]()
 
 > **"Talk to your server."**  
 > Transform complex system administration into simple, natural language conversations.  
 > Powered by **Groq Cloud** and **Llama 3.3**, combining CLI power with AI intelligence.
 
-[Features](#-key-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [Security](#-security-protocol)
+[Features](#-key-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [What's New](#-whats-new-in-v110) • [Documentation](#-documentation)
 
 </div>
+
+---
+
+## 🎉 What's New in v1.1.0
+
+**Major Feature Release** (February 9, 2026) - [Full Release Notes](RELEASE_NOTES_v1.1.0.md)
+
+- ✨ **Enhanced Shell:** Piping (`|`), redirection (`>`), Git branch detection
+- 🔔 **Intelligent Alerts:** Configurable thresholds, multi-channel notifications
+- 🔗 **Command Aliases:** Create shortcuts for frequent tasks
+- 📊 **Health Scoring:** Overall system health rating (0-100)
+- 👥 **Password Policies:** Strength validation, expiry tracking
+- 📁 **Advanced File Ops:** `search`, `cat`, `touch` commands
+- 💾 **System Export:** Complete state snapshots
+- 📋 **Enhanced Logs:** Bookmarks, statistics, real-time tailing
+
+**[View Full Changelog](VERSION_COMPARISON.md)** | **[Quick Start Guide](QUICKSTART.md)**
 
 ---
 
@@ -41,12 +60,28 @@ Unlike traditional CLI tools, NetMon-AI features a **Human-in-the-Loop (HITL) Se
 - **Robust Fallbacks:** Handles malformed AI responses gracefully with rule-based heuristics
 - **JSON Intent Extraction:** Extracts structured actions from LLM output with validation
 
+### � **Enhanced Shell Experience** (v1.1.0)
+- **Piping & Redirection:** Use `|` and `>` operators like a native shell
+- **Git Branch Detection:** Shows current branch in prompt automatically
+- **Command Aliases:** Create shortcuts for frequently used commands
+- **Persistent History:** Commands saved across sessions with Ctrl+R search
+- **Smart Autocomplete:** Tab completion for commands, files, and aliases
+- **Advanced File Ops:** `search`, `cat`, `touch` commands built-in
+
 ### 📊 **Real-Time System Dashboard**
 - **Live TUI:** Professional, responsive terminal UI using `Rich` library
 - **Multi-Metric Display:** CPU, Memory, Disk, and Network usage in one view
 - **Color-Coded Alerts:** GREEN (healthy) → YELLOW (warning) → RED (critical)
+- **System Health Score:** Overall health rating (0-100) with status
 - **Live Updates:** Refresh rates configurable, suitable for large monitors or scripts
 - **Compact Mode:** Query individual metrics: `ask "show me the ram usage"` → single-line response
+
+### 🔔 **Intelligent Alerting System** (v1.1.0)
+- **Multi-Channel Notifications:** Console, file, email, and webhook support
+- **Configurable Thresholds:** Per-resource warning and critical levels
+- **Alert Suppression:** Automatic deduplication (5-minute window)
+- **Alert History:** Track and review past alerts
+- **Real-Time Monitoring:** Automatic alert triggering on threshold breach
 
 ### 🛡️ **Enterprise-Grade Security**
 - **File Integrity Monitoring (FIM):** SHA-256 hashing for critical file change detection
@@ -55,13 +90,16 @@ Unlike traditional CLI tools, NetMon-AI features a **Human-in-the-Loop (HITL) Se
 - **Path Whitelisting:** Hard-coded restrictions on system directories (e.g., `/etc/shadow`, `System32`)
 - **Input Sanitization:** Command injection prevention via strict path validation and pattern matching
 - **Base64 API Key Storage:** Production API keys encrypted in `/etc/netmon-ai/.env.b64`
+- **Password Policies:** Enforce complexity, expiry, and strength requirements
+- **Session Management:** Track active sessions and login attempts
 
 ### ⚡ **Automation & Networking**
 - **Playbook Engine:** Execute batched administrative tasks from JSON files
 - **Network Toolkit:** Port scanning, ping, bandwidth monitoring, active connection tracking
 - **Service Management:** Start, stop, restart system services via AI or CLI
-- **User Management:** Add/remove users and manage permissions (with security approval)
+- **User Management:** Add/remove users with password validation and manage permissions
 - **Process Management:** List, monitor, and terminate processes with resource metrics
+- **System State Export:** Backup complete system configuration and metrics
 
 ### 📝 **Compliance & Monitoring**
 - **Structured Logging:** All events recorded with timestamps and user context
@@ -517,6 +555,18 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 
 ---
 
+## 📚 Documentation
+
+- **[README.md](Readme.md)** - Complete project documentation (this file)
+- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute quick start guide
+- **[ENHANCEMENTS.md](ENHANCEMENTS.md)** - Comprehensive feature guide
+- **[VERSION_COMPARISON.md](VERSION_COMPARISON.md)** - v1.0.0 vs v1.1.0 comparison
+- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Technical implementation
+- **[RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md)** - Full v1.1.0 release notes
+- **[RELEASE_NOTES_v1.0.0.md](RELEASE_NOTES_v1.0.0.md)** - Initial release notes
+
+---
+
 ## 🎓 Credits & Acknowledgments
 
 - **AI Engine:** [Groq Cloud](https://groq.com) & [Llama 3.3](https://www.meta.com/research/llama)
@@ -525,17 +575,24 @@ This project is licensed under the **MIT License** — see [LICENSE](LICENSE) fo
 - **System Monitoring:** [psutil](https://github.com/giampaolo/psutil)
 - **Debian Packaging:** [Debconf](https://wiki.debian.org/Debconf)
 
+**Special Thanks:**
+- PyShell project for shell inspiration
+- Modern shell experiences (zsh, fish, PowerShell)
+- Enterprise monitoring tools (Nagios, Zabbix, Prometheus)
+
 ---
 
 ## 🚧 Roadmap
 
-**v1.1** (Q1 2026)
+**v1.2** (Q2 2026)
 - Web-based dashboard (Flask + React)
 - REST API for remote management
-- Docker & Kubernetes integration
+- Database integration (PostgreSQL/SQLite)
 
-**v1.2** (Q2 2026)
+**v1.3** (Q3 2026)
+- Docker & Kubernetes integration
 - Multi-host distributed monitoring
+- Predictive analytics with ML
 - Advanced analytics & trend analysis
 - Integration with enterprise SIEM systems
 

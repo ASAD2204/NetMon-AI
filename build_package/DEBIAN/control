@@ -1,9 +1,11 @@
 Package: netmon-ai
-Version: 1.0.0
+Version: 1.1.0
 Section: utils
 Priority: optional
 Architecture: all
 Depends: python3, python3-pip, debconf
 Maintainer: Muhammad Asad <asadrafaqt16@gmail.com>
-Description: NetMon-AI: Intelligent Network Monitoring Platform
- An AI-powered sysadmin tool. Prompts for Groq API key on install.
+Description: NetMon-AI: Intelligent Network Monitoring Platform v1.1.0
+ An AI-powered system administration platform with enhanced shell experience,
+ intelligent alerting, password policies, command aliases, and advanced monitoring.
+ Features include piping, redirection, health scoring, and session management.
