@@ -128,12 +128,11 @@ chmod +x build.sh
 ./build.sh
 
 ```
-This creates `netmon-ai_1.0.0_all.deb` in your current directory.
+This creates `netmon-ai_1.1.0_all.deb` in your current directory.
 
 3. **Install the Package:**
 ```bash
-sudo dpkg -i netmon-ai_1.0.0_all.deb
-sudo apt-get install -f  # Fix any missing dependencies
+sudo dpkg -i netmon-ai_1.1.0_all.deb
 
 ```
 
@@ -143,53 +142,95 @@ When releases are published to GitHub:
 ```bash
 # Download from GitHub Releases page
 cd /tmp
-wget https://github.com/ASAD2204/NetMon-AI/releases/download/v1.0.0/netmon-ai_1.0.0_all.deb
+wget https://github.com/ASAD2204/NetMon-AI/releases/download/v1.1.0/netmon-ai_1.1.0_all.deb
 
 # Install
-sudo dpkg -i netmon-ai_1.0.0_all.deb
-sudo apt-get install -f
+sudo dpkg -i netmon-ai_1.1.0_all.deb
 
 ```
 
----
+4. **Post-Installation Setup:**
 
-**API Key Configuration:**
-   - You'll be prompted during installation to enter your Groq API Key via `debconf`
-   - Key is stored securely: `/etc/netmon-ai/.env.b64` (base64-encoded, permissions: 600)
+#### Option 1: Run from Virtual Environment (Recommended)
 
-3. **Install Python Dependencies (Post-Install):**
+```bash
+# Navigate to project directory
+cd ~/NetMon-AI
 
-   **Option A1: Virtual Environment (Recommended):**
+# Create virtual environment
+python3 -m venv venv
+
+# Activate it
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Download NLTK data
+python3 -m nltk.downloader wordnet
+
+# Create .env file with your Groq API key
+echo "GROQ_API_KEY=your_api_key_here" > .env
+chmod 600 .env
+
+# Fix file permissions (if cloned/built with sudo)
+sudo chown -R $USER:$USER ~/NetMon-AI
+
+# Create data directory
+mkdir -p ~/NetMon-AI/data
+
+# Run the application
+python3 src/shell.py
+```
+
+**Create an alias for easy access:**
+```bash
+echo 'alias netmon="cd ~/NetMon-AI && source venv/bin/activate && python3 src/shell.py"' >> ~/.bashrc
+source ~/.bashrc
+
+# Now you can run:
+netmon
+```
+
+#### Option 2: Run Installed Package with System-Wide Dependencies
+
+```bash
+# Install dependencies with environment variable approach
+sudo pip3 install --break-system-packages groq rich psutil nltk python-dotenv
+python3 -m nltk.downloader wordnet
+
+# Set API key as environment variable
+echo 'export GROQ_API_KEY="your_api_key_here"' >> ~/.bashrc
+source ~/.bashrc
+
+# Run the installed package
+netmon-ai
+```
+
+**API Key Configuration Options:**
+
+1. **Environment Variable (Simplest):**
    ```bash
-   # Create virtual environment
-   python3 -m venv /opt/netmon-ai-venv
-   
-   # Activate it
-   source /opt/netmon-ai-venv/bin/activate
-   
-   # Clone repo to access requirements.txt (or copy it manually)
-   git clone https://github.com/ASAD2204/NetMon-AI.git
-   cd NetMon-AI
-   
-   # Install dependencies
-   pip install -r requirements.txt
-   
-   # Download NLTK data
-   python3 -m nltk.downloader wordnet
-   
-   # Test the installation
-   ask "show me the ram usage"
-   ```
-   
-   **To run NetMon-AI in future sessions:**
-   ```bash
-   source /opt/netmon-ai-venv/bin/activate
-   netmon-ai
+   export GROQ_API_KEY="your_api_key_here"
    ```
 
-   **Option A2: System-Wide (Not Recommended on Modern Ubuntu):**
-   
-   Modern Ubuntu/Debian systems restrict `sudo pip3 install` to prevent breaking system Python. Use **Option A1 (Virtual Environment)** instead for better compatibility.
+2. **Project .env File (Development):**
+   ```bash
+   echo "GROQ_API_KEY=your_api_key_here" > ~/NetMon-AI/.env
+   chmod 600 ~/NetMon-AI/.env
+   ```
+
+3. **System-Wide .env (Production):**
+   ```bash
+   echo "GROQ_API_KEY=your_api_key_here" | sudo tee /usr/share/netmon-ai/.env
+   sudo chmod 600 /usr/share/netmon-ai/.env
+   ```
+
+4. **Base64 Encoded (Production - Most Secure):**
+   ```bash
+   echo -n "your_api_key_here" | base64 | sudo tee /etc/netmon-ai/.env.b64
+   sudo chmod 600 /etc/netmon-ai/.env.b64
+   ```
 
 ### Option B: Development Setup (Windows / Linux)
 
@@ -218,9 +259,10 @@ python -m nltk.downloader wordnet
 ```bash
 # Create .env file in project root
 echo "GROQ_API_KEY=gsk_your_api_key_here" > .env
+chmod 600 .env
 
-# Enable local .env loading (dev only):
-# Edit src/ai/groq_client.py and change: LOAD_ENV = True
+# NOTE: .env loading is enabled by default in v1.1.0
+# The application will automatically find and load your .env file
 ```
 
 5. **Run:**
@@ -253,7 +295,112 @@ ask "show me the top 5 memory consuming processes"
 
 ---
 
-## 📋 Complete Commands Reference
+## � Troubleshooting
+
+### Common Issues & Solutions
+
+#### 1. ModuleNotFoundError: No module named 'groq'
+
+**Problem:** Python dependencies not installed for the running environment.
+
+**Solution:**
+```bash
+# If running from virtual environment
+cd ~/NetMon-AI
+source venv/bin/activate
+pip install -r requirements.txt
+
+# If running installed package system-wide
+sudo pip3 install --break-system-packages groq rich psutil nltk python-dotenv
+```
+
+#### 2. API Key Not Found / Groq Client Not Initialized
+
+**Problem:** `GROQ_API_KEY` environment variable not set or `.env` file missing.
+
+**Solutions:**
+
+**Option A - Create .env file:**
+```bash
+cd ~/NetMon-AI
+echo "GROQ_API_KEY=your_api_key_here" > .env
+chmod 600 .env
+```
+
+**Option B - Set environment variable:**
+```bash
+export GROQ_API_KEY="your_api_key_here"
+# Add to ~/.bashrc for persistence
+echo 'export GROQ_API_KEY="your_api_key_here"' >> ~/.bashrc
+```
+
+#### 3. Permission Denied: '/home/user/NetMon-AI/data/ai_audit.log'
+
+**Problem:** Data directory doesn't exist or has wrong permissions.
+
+**Solution:**
+```bash
+mkdir -p ~/NetMon-AI/data
+sudo chown -R $USER:$USER ~/NetMon-AI
+chmod 755 ~/NetMon-AI/data
+```
+
+#### 4. Git Pull Conflicts After Update
+
+**Problem:** Local changes conflict with repository updates.
+
+**Solution:**
+```bash
+cd ~/NetMon-AI
+
+# Fix file permissions (if files owned by root)
+sudo chown -R $USER:$USER ~/NetMon-AI
+
+# Discard local changes and get clean update
+git reset --hard HEAD
+git clean -fd
+git pull origin main
+```
+
+#### 5. Warning: Error reading encrypted API key: Permission denied
+
+**Problem:** This warning is **harmless** - it's the production key file that doesn't exist in development.
+
+**Explanation:** The system tries 3 methods to load API key:
+1. Production: `/etc/netmon-ai/.env.b64` (shows warning if missing)
+2. Development: Project `.env` file (✅ works)
+3. Environment: `$GROQ_API_KEY` variable
+
+**To suppress the warning (optional):**
+```bash
+# Create production key file
+echo -n \"your_api_key_here\" | base64 | sudo tee /etc/netmon-ai/.env.b64
+sudo chmod 600 /etc/netmon-ai/.env.b64
+```
+
+#### 6. Debian Package Installation Fails
+
+**Problem:** Dependency conflicts or typing-extensions issues.
+
+**Solution:**
+```bash
+# Use virtual environment approach instead (recommended)
+cd ~/NetMon-AI
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python3 src/shell.py
+```
+
+### Getting Help
+
+- 📖 **Full Documentation:** See [ENHANCEMENTS.md](ENHANCEMENTS.md) and [QUICKSTART.md](QUICKSTART.md)
+- 🐛 **Report Issues:** [GitHub Issues](https://github.com/ASAD2204/NetMon-AI/issues)
+- 💬 **Ask Questions:** Use `help` command within the shell
+
+---
+
+## �📋 Complete Commands Reference
 
 ### Native Commands (Type directly in shell)
 
